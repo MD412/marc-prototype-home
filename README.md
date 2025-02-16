@@ -98,7 +98,6 @@ This organization keeps each prototype's assets self-contained and makes it easi
 - `app/prototypes/_template/` - Template for creating new prototypes
 - `app/components/` - Shared components that can be used across prototypes
 - `app/styles/` - CSS modules and style utilities
-- `app/lib/` - Utility functions and shared logic
 - `public/` - Global static assets only (favicon, logos, etc.)
 
 ## Best Practices
