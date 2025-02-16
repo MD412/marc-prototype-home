@@ -5,7 +5,7 @@
 // 3. Create an 'images' folder for your prototype's images
 // 4. Rename and customize the component and styles as needed
 
-import Image from 'next/image';
+import Link from 'next/link';
 import styles from './styles.module.css';
 
 export default function PrototypeTemplate() {
@@ -60,7 +60,7 @@ export default function PrototypeTemplate() {
 
       {/* Optional: Add a back link to the home page */}
       <footer className={styles.footer}>
-        <a href="/" className={styles.backLink}>← Back to prototypes</a>
+        <Link href="/" className={styles.backLink}>← Back to prototypes</Link>
       </footer>
     </div>
   );

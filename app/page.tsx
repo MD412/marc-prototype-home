@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import styles from './styles/home.module.css';
 import { instrumentSans } from './fonts';
@@ -22,7 +21,7 @@ export default function Home() {
   return (
     <div className={`${styles.container} ${instrumentSans.className}`}>
       <header className={styles.header}>
-        <h1>Elizabeth's prototypes</h1>
+        <h1>Elizabeth&apos;s prototypes</h1>
       </header>
 
       <main>
