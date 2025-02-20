@@ -1,5 +1,5 @@
 ---
-description: 
+description: Starting prototypes
 globs: 
 ---
 # 1. Creating a new prototype
@@ -20,3 +20,6 @@ If I don't tell you what the prototype will be, ask me to name the prototype bef
 1. Never add anything to the global CSS file unless prompted to.
 2. All CSS should be in the prototype's folder.
 3. Do not use :root outside of the globals.css file.
+
+# 3. Typography notes
+1. Always default to sentence case with text on the page unless prompted to do otherwise.
