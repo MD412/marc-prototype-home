@@ -1,93 +1,48 @@
 /* CSS Reset */
-* {
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
   box-sizing: border-box;
-  padding: 0;
+}
+
+/* 2. Remove default margin */
+* {
   margin: 0;
 }
 
-/* Design tokens */
-:root {
-  --max-width: 1200px;
-  --border-radius: 12px;
-
-  /* Colors */
-  --foreground-rgb: 0, 0, 0;
-  --background-rgb: 255, 255, 255;
-
-  /* Typography */
-  --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
-    "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
-    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
-}
-
-/* Dark mode overrides */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-rgb: 0, 0, 0;
-  }
-  html {
-    color-scheme: dark;
-  }
-}
-
-/* Basic document setup */
-html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
-    'Helvetica Neue', Arial, sans-serif;
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+  /* 3. Add accessible line-height */
+  line-height: 1.5;
+  /* 4. Improve text rendering */
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Basic element styles */
-a {
-  color: inherit;
-  text-decoration: none;
+/* 5. Improve media defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
 }
 
-h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+/* 6. Inherit fonts for form controls */
+input, button, textarea, select {
+  font: inherit;
 }
 
-h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+/* 7. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
 }
 
+/* 8. Improve line wrapping */
 p {
-  line-height: 1.6;
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
 }
 
-.container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.card {
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  background: rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
-}
-
-.card:hover {
-  background: rgba(0, 0, 0, 0.04);
-  transform: translateY(-2px);
+/*
+  9. Create a root stacking context
+*/
+#root, #__next {
+  isolation: isolate;
 }
