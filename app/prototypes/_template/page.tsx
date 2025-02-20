@@ -11,6 +11,11 @@ import styles from './styles.module.css';
 export default function PrototypeTemplate() {
   return (
     <div className={styles.container}>
+      {/* Header with back link */}
+      <header className={styles.header}>
+        <Link href="/" className={styles.backLink}>← Back to prototypes</Link>
+      </header>
+
       {/* Main content area */}
       <main className={styles.main}>
         <h1 className={styles.title}>Your Prototype Title</h1>
@@ -57,11 +62,6 @@ export default function PrototypeTemplate() {
           Interactive Button
         </button>
       </main>
-
-      {/* Optional: Add a back link to the home page */}
-      <footer className={styles.footer}>
-        <Link href="/" className={styles.backLink}>← Back to prototypes</Link>
-      </footer>
     </div>
   );
 } 
