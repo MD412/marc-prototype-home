@@ -1,0 +1,8 @@
+---
+description: Adding a new CSS file and global styles
+globs: 
+---
+# Global CSS
+1. Never add anything to the global CSS file unless prompted to.
+2. All CSS should be in the prototype's folder.
+3. Do not use :root outside of the globals.css file.

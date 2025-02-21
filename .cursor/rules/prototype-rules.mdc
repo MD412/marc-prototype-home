@@ -1,0 +1,20 @@
+---
+description: Creating prototypes
+globs: 
+---
+This repository is a home for design students to create prototypes.
+
+# Creating a new prototype
+
+When I ask you to...
+- create prototype
+- make prototype
+- add prototype
+
+Or any other language similar to this.
+
+1. Always copy the "_template" directory in the "prototypes" directory. 
+2. Delete the comments at the top of the template
+3. Always add the prototype to my homepage.
+
+If I don't tell you what the prototype will be, ask me to name the prototype before proceeding with creating the prototype.
