@@ -1,3 +1,5 @@
+"use client";
+
 // Template for creating a new prototype
 // To use this template:
 // 1. Create a new folder in app/prototypes with your prototype name
