@@ -1,3 +1,12 @@
+/**
+ * Root layout component that wraps all pages in the application.
+ * This layout:
+ * - Sets up Geist fonts (both Sans and Mono variants)
+ * - Configures metadata like title and favicon
+ * - Provides the basic HTML structure
+ * - Applies font variables to the entire app
+ */
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./styles/globals.css";

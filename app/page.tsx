@@ -6,13 +6,13 @@ export default function Home() {
   // Add your prototypes to this array
   const prototypes = [
     {
-      title: 'Example Prototype',
-      description: 'Create your first prototype by adding a new page in the prototypes folder.',
+      title: 'Getting started',
+      description: 'How to create a prototype',
       path: '/prototypes/example'
     },
     // Add your new prototypes here like this:
     // {
-    //   title: 'My New Prototype',
+    //   title: 'Your new prototype',
     //   description: 'A short description of what this prototype does',
     //   path: '/prototypes/my-new-prototype'
     // },
