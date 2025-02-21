@@ -4,7 +4,7 @@ This is your personal prototyping workspace for the "Prototyping with Cursor" cl
 
 ## Getting started
 
-1. Clone this repository
+1. Click "Use this template"
 2. Install dependencies:
    ```bash
    npm install
@@ -17,9 +17,9 @@ This is your personal prototyping workspace for the "Prototyping with Cursor" cl
 
 ## Creating a new prototype
 
-1. Open Composer Agent (⌘-I)
-2. Type: "Create a prototype for me named <name>. 
-3. Describe the key features"
+1. Open Composer Agent `(⌘-I)`
+2. Type: "Create a prototype for me named `<name>`. "
+3. Describe the key features
 4. Share any design style preferences
 
 ### In case you need the manual way
@@ -48,7 +48,7 @@ This is your personal prototyping workspace for the "Prototyping with Cursor" cl
      ```
    - Your prototype will automatically appear on the home page
 
-Example structure:
+### Example structure
 ```
 app/
 ├── prototypes/

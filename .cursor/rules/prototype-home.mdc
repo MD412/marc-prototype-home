@@ -2,6 +2,8 @@
 description: Starting prototypes
 globs: 
 ---
+ This repository is a home for design students to create prototypes.
+
 # 1. Creating a new prototype
 
 When I ask you to...
@@ -22,4 +24,4 @@ If I don't tell you what the prototype will be, ask me to name the prototype bef
 3. Do not use :root outside of the globals.css file.
 
 # 3. Typography notes
-1. Always default to sentence case with text on the page unless prompted to do otherwise.
+1. Always default to sentence case with headings unless prompted to do otherwise.

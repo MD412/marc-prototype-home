@@ -26,7 +26,7 @@ export default function Home() {
 
       <main>
         <section className={styles.grid}>
-          {/* Map through the prototypes array to create cards */}
+          {/* Goes through the prototypes list (array) to create cards */}
           {prototypes.map((prototype, index) => (
             <Link 
               key={index}
