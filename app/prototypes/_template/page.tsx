@@ -13,10 +13,6 @@ import styles from './styles.module.css';
 export default function PrototypeTemplate() {
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <Link href="/" className={styles.backLink}>← Back to prototypes</Link>
-      </header>
-
       <main className={styles.main}>
         {/* Add your prototype content here */}
       </main>
