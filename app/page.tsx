@@ -10,11 +10,6 @@ export default function Home() {
       description: 'How to create a prototype',
       path: '/prototypes/example'
     },
-    {
-      title: 'Design library',
-      description: 'Reusable components that you can use in your prototypes',
-      path: '/prototypes/design-library'
-    },
     // Add your new prototypes here like this:
     // {
     //   title: 'Your new prototype',

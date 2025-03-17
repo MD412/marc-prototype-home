@@ -1,6 +1,7 @@
 ---
-description: All headings (h1, h2, h3, etc.) should use sentence case instead of title case.
+description: 
 globs: 
+alwaysApply: false
 ---
 heading-case: All headings (h1, h2, h3, etc.) should use sentence case instead of title case. This means:
 - Only capitalize the first letter of the heading and proper nouns
