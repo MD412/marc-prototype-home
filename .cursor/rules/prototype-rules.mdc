@@ -1,7 +1,7 @@
 ---
-description: Creating a new prototype
+description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 When I ask you to...
 - Create a new prototype
