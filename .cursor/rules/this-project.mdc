@@ -7,8 +7,9 @@ alwaysApply: true
   This repository serves as a central hub for students taking the "Prototyping with Cursor" workshop. It's designed to accommodate students from diverse backgrounds, ranging from complete beginners (first-time command line users) to experienced front-end developers, with a primary focus on product and UX designers.
 
   Project structure:
-  - The main working directory for all prototypes is the `/prototypes` folder
-  - Each prototype lives in its own dedicated folder within `/prototypes`
+  - All code is in the `app/` folder
+  - The main working directory for all prototypes is the `app/prototypes` folder
+  - Each prototype lives in its own dedicated folder within `/app/prototypes`
   - Each prototype functions as an independent entity (unless specifically noted otherwise)
   - Each prototype can use its own tech stack and dependencies as needed
   - Each prototype should include its own README.md with setup instructions
@@ -26,8 +27,3 @@ alwaysApply: true
   - Each prototype should be treated as its own standalone project
   - Documentation should be beginner-friendly
   - Code comments should be descriptive and educational
----
-
-# Project overview
-
-This is a repository for the Prototyping with Cursor workshop, designed to help students learn to use AI-assisted coding for prototyping.

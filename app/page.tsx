@@ -10,6 +10,11 @@ export default function Home() {
       description: 'How to create a prototype',
       path: '/prototypes/example'
     },
+    {
+      title: 'Confetti button',
+      description: 'An interactive button that creates a colorful confetti explosion',
+      path: '/prototypes/confetti-button'
+    },
     // Add your new prototypes here like this:
     // {
     //   title: 'Your new prototype',
