@@ -1,5 +1,5 @@
 ---
-description: When running into an issue or when something isn't working, refer to this rule to make sure you have adequate context for fixing the problem.
+description: If something is not working and you're asked to debug or fix an issue.
 globs: 
 alwaysApply: false
 ---
