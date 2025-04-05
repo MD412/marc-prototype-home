@@ -13,9 +13,9 @@ export default function ConfettiButtonPrototype() {
     
     confetti({
       particleCount: 100,
-      spread: 70,
+      spread: 100,
       origin: { y: 0.6 },
-      colors: ['#FF0000', '#0000FF', '#FFFF00'], // Red, blue, yellow
+      colors: ['#FF69B4', '#00FFFF', '#9932CC'], // Pink, bright aqua, purple
       shapes: ['square'], // Keep the square particles for the pixel look
     });
 
@@ -33,7 +33,7 @@ export default function ConfettiButtonPrototype() {
           Confetti button
         </div>
         <div className={styles.windowContent}>
-          <h1 className={styles.title}>Click to celebrate</h1>
+          <h1 className={styles.title}>Congratulations! You have set up your first repository.</h1>
           <button 
             className={`${styles.confettiButton} ${isAnimating ? styles.animate : ''}`}
             onClick={triggerConfetti}
