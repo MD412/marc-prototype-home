@@ -1,49 +1,53 @@
+"use client";
+
 import Link from "next/link";
 import styles from './styles/home.module.css';
-import { instrumentSans } from './fonts';
+import { spaceGrotesk } from './fonts';
+import ParticleField from './components/ParticleField';
 
 export default function Home() {
-  // Add your prototypes to this array
   const prototypes = [
     {
+      title: 'Marc-1',
+      description: 'A modern interface kit',
+      path: '/prototypes/Marc-1'
+    },
+    {
       title: 'Getting started',
-      description: 'How to create a prototype',
+      description: 'Learn how to create and customize your prototypes',
       path: '/prototypes/example'
     },
     {
       title: 'Confetti button',
-      description: 'An interactive button that creates a colorful confetti explosion',
+      description: 'Interactive button with confetti animation',
       path: '/prototypes/confetti-button'
     },
-    // Add your new prototypes here like this:
-    // {
-    //   title: 'Your new prototype',
-    //   description: 'A short description of what this prototype does',
-    //   path: '/prototypes/my-new-prototype'
-    // },
   ];
 
   return (
-    <div className={`${styles.container} ${instrumentSans.className}`}>
-      <header className={styles.header}>
-        <h1>Elizabeth's prototypes</h1>
-      </header>
+    <div className={`${styles.container} ${spaceGrotesk.className}`}>
+      <ParticleField />
+      
+      <div className={styles.mainContent}>
+        <header className={styles.header}>
+          <h1>Marc's Prototypes</h1>
+        </header>
 
-      <main>
-        <section className={styles.grid}>
-          {/* Goes through the prototypes list (array) to create cards */}
+        <main className={styles.grid}>
           {prototypes.map((prototype, index) => (
             <Link 
               key={index}
               href={prototype.path} 
-              className={styles.card}
+              className={styles.linkCard}
             >
-              <h3>{prototype.title}</h3>
-              <p>{prototype.description}</p>
+              <div className={styles.card}>
+                <h3>{prototype.title}</h3>
+                <p>{prototype.description}</p>
+              </div>
             </Link>
           ))}
-        </section>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

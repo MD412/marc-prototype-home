@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Elizabeth's prototypes",
+  title: "Marc's Prototypes",
   description: "The home for all my prototypes",
   icons: {
     icon: [

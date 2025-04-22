@@ -1,50 +1,255 @@
 .container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 2rem;
+  min-height: 100vh;
+  height: 100%;
+  background: #1A1B2E;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  color: white;
+}
+
+.container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(26, 27, 46, 0.2) 0%,
+    rgba(77, 114, 170, 0.2) 53%,
+    rgba(32, 33, 53, 0.2) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+  pointer-events: none;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Overlay grid for texture */
+.container::before {
+  content: '';
+  position: fixed;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: linear-gradient(rgba(64, 224, 208, 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(64, 224, 208, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+  animation: gridMove 20s linear infinite;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+@keyframes gridMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-32px, -32px);
+  }
+}
+
+.mainContent {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 472px;
+  background: rgba(32, 37, 61, 0.08);
+  border-radius: 16px;
+  border: 1px solid rgba(64, 224, 208, 0.1);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
 }
 
 .header {
-  margin-bottom: 2rem;
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(64, 224, 208, 0.1);
 }
 
 .header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: -0.5px;
+  margin: 0;
 }
 
 .grid {
+  position: relative;
+  z-index: 2;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.5rem;
+}
+
+.linkCard {
+  text-decoration: none;
+  display: block;
+  position: relative;
 }
 
 .card {
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  background: rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-  display: block;
+  height: 100%;
+  background: rgba(32, 37, 61, 0.3);
+  border-radius: 12px;
+  padding: 1.25rem;
+  color: white;
+  position: relative;
+  border: 1px solid rgba(64, 224, 208, 0.1);
+  transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+  display: flex;
+  flex-direction: column;
+  transform-origin: center;
+  backdrop-filter: blur(4px);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1px;
+  background: linear-gradient(
+    45deg,
+    rgba(64, 224, 208, 0) 0%,
+    rgba(64, 224, 208, 0.1) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
 .card:hover {
-  background: rgba(0, 0, 0, 0.04);
-  transform: translateY(-2px);
+  background: rgba(77, 114, 170, 0.2);
+  transform: translateY(-2px) scale(1.02);
+  border-color: transparent;
+  backdrop-filter: blur(8px);
+}
+
+.card:hover::before {
+  opacity: 1;
+  background: linear-gradient(
+    45deg,
+    rgba(64, 224, 208, 0.2) 0%,
+    rgba(64, 224, 208, 0.1) 50%,
+    rgba(64, 224, 208, 0) 100%
+  );
 }
 
 .card h3 {
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.5rem 0;
   font-size: 1.25rem;
   font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  transition: color 0.3s ease;
+}
+
+.card:hover h3 {
+  color: rgba(255, 255, 255, 1);
 }
 
 .card p {
-  font-size: 0.9rem;
-  opacity: 0.8;
-  line-height: 1.6;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  transition: color 0.3s ease;
+}
+
+.card:hover p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Ambient glow points */
+.glowPoints {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.glowPoint {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(64, 224, 208, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: glowPulse 4s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+
+@keyframes glowPulse {
+  0% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 0.3; }
+}
+
+/* Decorative elements */
+.starburstContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.1;
+}
+
+.starburst {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: #FFD700;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.starburst:nth-child(1) { top: 10%; left: 10%; }
+.starburst:nth-child(2) { top: 30%; right: 15%; transform: rotate(45deg); }
+.starburst:nth-child(3) { bottom: 20%; left: 20%; transform: rotate(-45deg); }
+.starburst:nth-child(4) { bottom: 10%; right: 10%; transform: rotate(90deg); }
+
+/* Add a floating animation to cards */
+@keyframes floatCard {
+  0%, 100% { transform: translateZ(0); }
+  50% { transform: translateZ(10px); }
+}
+
+/* Ensure container pseudo-elements don't interfere with blur effect */
+.container::before,
+.container::after {
+  z-index: 0;
+}
+
+/* Adjust grid z-index to ensure proper stacking */
+.grid {
+  z-index: 2;
 } 
