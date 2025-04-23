@@ -1,35 +1,152 @@
 /* Module-specific styles */
 .container {
   min-height: 100vh;
-  background: #1A1B2E;
-  padding: 1.5rem;
-  color: white;
+  padding: 2rem;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.retroMode {
+  background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
 }
 
 .header {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 2rem;
-  max-width: 1200px;
-  margin: 0 auto 2rem;
-  padding: 0 1rem;
-  width: 100%;
   gap: 1rem;
 }
 
-.header h1 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: white;
-  letter-spacing: -0.5px;
+.headerTitle {
+  font-size: 3rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .main {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 0 1rem;
-  display: grid;
+  position: relative;
+  z-index: 1;
+}
+
+/* Decorative Elements */
+.starburst {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  opacity: 0.1;
+  animation: rotate 20s linear infinite;
+}
+
+.boomerang {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(-45deg, #4ecdc4, #ff6b6b);
+  clip-path: polygon(0% 30%, 70% 0%, 100% 30%, 30% 100%);
+  opacity: 0.1;
+  animation: float 10s ease-in-out infinite;
+}
+
+/* Tabs Styling */
+.tabs {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Counter Section */
+.counterSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 1.5rem;
+}
+
+.button {
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.progressWrapper {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.featureList li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.featureList li:hover {
+  transform: translateX(10px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.themeToggle {
+  margin-top: 1rem;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
 }
 
 .card {
@@ -70,61 +187,6 @@
   font-size: 0.875rem;
   line-height: 1.5;
   letter-spacing: -0.15px;
-}
-
-.button {
-  background: rgba(64, 224, 208, 0.1);
-  border: 1px solid rgba(64, 224, 208, 0.2);
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  color: #40E0D0;
-  font-weight: 500;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  letter-spacing: -0.15px;
-}
-
-.button:hover {
-  background: rgba(64, 224, 208, 0.15);
-  border-color: rgba(64, 224, 208, 0.3);
-  transform: translateY(-1px);
-}
-
-.button:active {
-  transform: translateY(0);
-}
-
-.featureList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.875rem;
-  line-height: 1.6;
-  letter-spacing: -0.15px;
-  display: grid;
-  gap: 0.5rem;
-}
-
-.starburst {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  background: var(--googie-sunshine);
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  opacity: 0.1;
-  z-index: -1;
-}
-
-.boomerang {
-  position: absolute;
-  width: 150px;
-  height: 50px;
-  background: var(--googie-turquoise);
-  clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
-  opacity: 0.1;
-  z-index: -1;
 }
 
 .section {
