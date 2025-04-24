@@ -44,15 +44,20 @@ export default function DigitalPiano() {
   const animationFrameRef = useRef<number>();
   const noteStatesRef = useRef<{ [key: string]: NoteState }>({});
 
-  useEffect(() => {
-    const ctx = new AudioContext();
-    const analyserNode = ctx.createAnalyser();
-    analyserNode.fftSize = 2048;
-    analyserNode.connect(ctx.destination);
-    setAudioContext(ctx);
-    setAnalyser(analyserNode);
+  const initializeAudio = () => {
+    if (!audioContext) {
+      const ctx = new AudioContext();
+      const analyserNode = ctx.createAnalyser();
+      analyserNode.fftSize = 2048;
+      analyserNode.connect(ctx.destination);
+      setAudioContext(ctx);
+      setAnalyser(analyserNode);
+    }
+  };
 
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      initializeAudio();
       const note = keyboardMap[e.key.toLowerCase()];
       if (!note || e.repeat) return;
       
@@ -196,7 +201,7 @@ export default function DigitalPiano() {
       <Link href="/" className={styles.backButton}>
         ← Back to Prototypes
       </Link>
-      <div className={styles.container}>
+      <div className={styles.container} onClick={initializeAudio}>
         <div className={styles.titleBar}>
           <div className={styles.windowControls}>
             <div className={styles.windowButton}></div>
@@ -214,25 +219,37 @@ export default function DigitalPiano() {
                 <div className={styles.waveformButtons}>
                   <button
                     className={`${styles.waveformButton} ${waveform === 'sine' ? styles.active : ''}`}
-                    onClick={() => setWaveform('sine')}
+                    onClick={() => {
+                      initializeAudio();
+                      setWaveform('sine');
+                    }}
                   >
                     Sine
                   </button>
                   <button
                     className={`${styles.waveformButton} ${waveform === 'square' ? styles.active : ''}`}
-                    onClick={() => setWaveform('square')}
+                    onClick={() => {
+                      initializeAudio();
+                      setWaveform('square');
+                    }}
                   >
                     Square
                   </button>
                   <button
                     className={`${styles.waveformButton} ${waveform === 'sawtooth' ? styles.active : ''}`}
-                    onClick={() => setWaveform('sawtooth')}
+                    onClick={() => {
+                      initializeAudio();
+                      setWaveform('sawtooth');
+                    }}
                   >
                     Saw
                   </button>
                   <button
                     className={`${styles.waveformButton} ${waveform === 'triangle' ? styles.active : ''}`}
-                    onClick={() => setWaveform('triangle')}
+                    onClick={() => {
+                      initializeAudio();
+                      setWaveform('triangle');
+                    }}
                   >
                     Tri
                   </button>
@@ -316,9 +333,21 @@ export default function DigitalPiano() {
                       key={note}
                       className={`${styles.key} ${note.includes('#') ? styles.black : styles.white} 
                         ${activeNotes.has(note) ? styles.active : ''}`}
-                      onMouseDown={() => playNote(note)}
+                      onMouseDown={() => {
+                        initializeAudio();
+                        playNote(note);
+                      }}
                       onMouseUp={() => stopNote(note)}
                       onMouseLeave={() => stopNote(note)}
+                      onTouchStart={(e) => {
+                        e.preventDefault();
+                        initializeAudio();
+                        playNote(note);
+                      }}
+                      onTouchEnd={(e) => {
+                        e.preventDefault();
+                        stopNote(note);
+                      }}
                     >
                       <span>{note}</span>
                       <span className={styles.keyLabel}>
