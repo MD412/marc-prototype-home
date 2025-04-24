@@ -7,7 +7,7 @@
 // 3. Create an 'images' folder for your prototype's images
 // 4. Rename and customize the component and styles as needed
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import styles from './styles.module.css';
 import VaporwaveBackground from './VaporwaveBackground';
@@ -43,18 +43,79 @@ export default function DigitalPiano() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
   const noteStatesRef = useRef<{ [key: string]: NoteState }>({});
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
 
-  const initializeAudio = () => {
-    if (!audioContext) {
+  const initializeAudio = useCallback(() => {
+    if (!audioContextRef.current) {
       console.log('Initializing AudioContext');
       const ctx = new AudioContext();
       const analyserNode = ctx.createAnalyser();
       analyserNode.fftSize = 2048;
       analyserNode.connect(ctx.destination);
+      
+      audioContextRef.current = ctx;
+      analyserRef.current = analyserNode;
       setAudioContext(ctx);
       setAnalyser(analyserNode);
+      console.log('AudioContext initialized');
     }
-  };
+    return audioContextRef.current;
+  }, []);
+
+  const playNote = useCallback((note: string) => {
+    const ctx = audioContextRef.current;
+    const analyserNode = analyserRef.current;
+    
+    if (!ctx || !analyserNode) {
+      console.log('No audio context available');
+      return;
+    }
+
+    console.log('Playing note:', note);
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    osc.type = waveform;
+    osc.frequency.setValueAtTime(getNoteFrequency(note), ctx.currentTime);
+    
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + attack);
+    
+    osc.connect(gain);
+    gain.connect(analyserNode);
+    osc.start();
+
+    noteStatesRef.current[note] = { oscillator: osc, gain };
+    setActiveNotes(prev => new Set(prev).add(note));
+  }, [waveform, volume, attack]);
+
+  const stopNote = useCallback((note: string) => {
+    console.log('Stopping note:', note);
+    const noteState = noteStatesRef.current[note];
+    const ctx = audioContextRef.current;
+    
+    if (noteState && ctx) {
+      const { oscillator, gain } = noteState;
+      
+      gain.gain.cancelScheduledValues(ctx.currentTime);
+      gain.gain.setValueAtTime(gain.gain.value, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.01);
+      
+      setTimeout(() => {
+        oscillator.stop();
+        oscillator.disconnect();
+        gain.disconnect();
+      }, 20);
+
+      delete noteStatesRef.current[note];
+      setActiveNotes(prev => {
+        const newNotes = new Set(prev);
+        newNotes.delete(note);
+        return newNotes;
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -79,7 +140,7 @@ export default function DigitalPiano() {
     // Handle page visibility change to stop all notes
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        stopAllNotes();
+        Object.keys(noteStatesRef.current).forEach(stopNote);
       }
     };
 
@@ -93,12 +154,12 @@ export default function DigitalPiano() {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('keyup', handleKeyUp);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-      stopAllNotes();
+      Object.keys(noteStatesRef.current).forEach(stopNote);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, []);
+  }, [initializeAudio, playNote, stopNote]);
 
   useEffect(() => {
     if (!analyser || !canvasRef.current) return;
@@ -153,55 +214,6 @@ export default function DigitalPiano() {
   const getNoteFrequency = (note: string) => {
     const noteIndex = notes.indexOf(note);
     return 440 * Math.pow(2, (noteIndex - 9) / 12 + (octave - 4));
-  };
-
-  const stopNote = (note: string) => {
-    console.log('Stopping note:', note);
-    const noteState = noteStatesRef.current[note];
-    if (noteState && audioContext) {
-      const { oscillator, gain } = noteState;
-      
-      gain.gain.cancelScheduledValues(audioContext.currentTime);
-      gain.gain.setValueAtTime(gain.gain.value, audioContext.currentTime);
-      gain.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.01);
-      
-      setTimeout(() => {
-        oscillator.stop();
-        oscillator.disconnect();
-        gain.disconnect();
-      }, 20);
-
-      delete noteStatesRef.current[note];
-      setActiveNotes(prev => {
-        const newNotes = new Set(prev);
-        newNotes.delete(note);
-        return newNotes;
-      });
-    }
-  };
-
-  const playNote = (note: string) => {
-    if (!audioContext || !analyser) {
-      console.log('No audio context available');
-      return;
-    }
-
-    console.log('Playing note:', note);
-    const osc = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-    
-    osc.type = waveform;
-    osc.frequency.setValueAtTime(getNoteFrequency(note), audioContext.currentTime);
-    
-    gain.gain.setValueAtTime(0, audioContext.currentTime);
-    gain.gain.linearRampToValueAtTime(volume, audioContext.currentTime + attack);
-    
-    osc.connect(gain);
-    gain.connect(analyser);
-    osc.start();
-
-    noteStatesRef.current[note] = { oscillator: osc, gain };
-    setActiveNotes(prev => new Set(prev).add(note));
   };
 
   return (
