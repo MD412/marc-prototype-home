@@ -54,7 +54,9 @@ export default function DigitalPiano() {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       const note = keyboardMap[e.key.toLowerCase()];
-      if (note && !activeNotes.has(note) && !e.repeat) {
+      if (!note || e.repeat) return;
+      
+      if (!noteStatesRef.current[note]) {
         playNote(note);
       }
     };
@@ -143,13 +145,32 @@ export default function DigitalPiano() {
     return 440 * Math.pow(2, (noteIndex - 9) / 12 + (octave - 4));
   };
 
+  const stopNote = (note: string) => {
+    const noteState = noteStatesRef.current[note];
+    if (noteState && audioContext) {
+      const { oscillator, gain } = noteState;
+      
+      gain.gain.cancelScheduledValues(audioContext.currentTime);
+      gain.gain.setValueAtTime(gain.gain.value, audioContext.currentTime);
+      gain.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.01);
+      
+      setTimeout(() => {
+        oscillator.stop();
+        oscillator.disconnect();
+        gain.disconnect();
+      }, 20);
+
+      delete noteStatesRef.current[note];
+      setActiveNotes(prev => {
+        const newNotes = new Set(prev);
+        newNotes.delete(note);
+        return newNotes;
+      });
+    }
+  };
+
   const playNote = (note: string) => {
     if (!audioContext || !analyser) return;
-
-    // If the note is already playing, stop it first
-    if (noteStatesRef.current[note]) {
-      stopNote(note);
-    }
 
     const osc = audioContext.createOscillator();
     const gain = audioContext.createGain();
@@ -157,42 +178,15 @@ export default function DigitalPiano() {
     osc.type = waveform;
     osc.frequency.setValueAtTime(getNoteFrequency(note), audioContext.currentTime);
     
-    // Apply attack
     gain.gain.setValueAtTime(0, audioContext.currentTime);
     gain.gain.linearRampToValueAtTime(volume, audioContext.currentTime + attack);
     
-    // Connect oscillator -> gain -> analyzer -> destination
     osc.connect(gain);
     gain.connect(analyser);
-    analyser.connect(audioContext.destination);
     osc.start();
 
     noteStatesRef.current[note] = { oscillator: osc, gain };
     setActiveNotes(prev => new Set(prev).add(note));
-  };
-
-  const stopNote = (note: string) => {
-    const noteState = noteStatesRef.current[note];
-    if (noteState && audioContext) {
-      const { oscillator, gain } = noteState;
-
-      // Apply release
-      gain.gain.linearRampToValueAtTime(0, audioContext.currentTime + release);
-
-      // Schedule the oscillator to stop after release
-      setTimeout(() => {
-        oscillator.stop();
-        oscillator.disconnect();
-        gain.disconnect();
-        delete noteStatesRef.current[note];
-      }, release * 1000);
-
-      setActiveNotes(prev => {
-        const newNotes = new Set(prev);
-        newNotes.delete(note);
-        return newNotes;
-      });
-    }
   };
 
   return (
