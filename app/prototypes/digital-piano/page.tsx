@@ -46,6 +46,7 @@ export default function DigitalPiano() {
 
   const initializeAudio = () => {
     if (!audioContext) {
+      console.log('Initializing AudioContext');
       const ctx = new AudioContext();
       const analyserNode = ctx.createAnalyser();
       analyserNode.fftSize = 2048;
@@ -57,19 +58,21 @@ export default function DigitalPiano() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      initializeAudio();
-      const note = keyboardMap[e.key.toLowerCase()];
-      if (!note || e.repeat) return;
-      
-      if (!noteStatesRef.current[note]) {
-        playNote(note);
+      console.log('Key down:', e.key);
+      const key = e.key.toLowerCase();
+      if (keyboardMap[key] && !e.repeat) {
+        console.log('Playing note:', keyboardMap[key]);
+        initializeAudio();
+        playNote(keyboardMap[key]);
       }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      const note = keyboardMap[e.key.toLowerCase()];
-      if (note) {
-        stopNote(note);
+      console.log('Key up:', e.key);
+      const key = e.key.toLowerCase();
+      if (keyboardMap[key]) {
+        console.log('Stopping note:', keyboardMap[key]);
+        stopNote(keyboardMap[key]);
       }
     };
 
@@ -80,13 +83,15 @@ export default function DigitalPiano() {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
+    // Add event listeners
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
+    // Cleanup function
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keyup', handleKeyUp);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       stopAllNotes();
       if (animationFrameRef.current) {
@@ -151,6 +156,7 @@ export default function DigitalPiano() {
   };
 
   const stopNote = (note: string) => {
+    console.log('Stopping note:', note);
     const noteState = noteStatesRef.current[note];
     if (noteState && audioContext) {
       const { oscillator, gain } = noteState;
@@ -175,8 +181,12 @@ export default function DigitalPiano() {
   };
 
   const playNote = (note: string) => {
-    if (!audioContext || !analyser) return;
+    if (!audioContext || !analyser) {
+      console.log('No audio context available');
+      return;
+    }
 
+    console.log('Playing note:', note);
     const osc = audioContext.createOscillator();
     const gain = audioContext.createGain();
     
