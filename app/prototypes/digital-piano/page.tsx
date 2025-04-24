@@ -193,6 +193,9 @@ export default function DigitalPiano() {
     <>
       <div className={styles.background} />
       <div className={styles.starfield} />
+      <Link href="/prototypes" className={styles.backButton}>
+        ← Back to Prototypes
+      </Link>
       <div className={styles.container}>
         <div className={styles.titleBar}>
           <div className={styles.windowControls}>
