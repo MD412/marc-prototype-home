@@ -1,11 +1,11 @@
 "use client";
 
 import styles from './styles.module.css';
-import { Geist } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import { useState, useRef } from 'react';
 
-const geist = Geist({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'] });
 
 const THEMES = {
   blue: {
@@ -74,12 +74,18 @@ export default function ExamplePrototype() {
   const currentTheme = THEMES[theme];
 
   return (
-    <div className={`${styles.container} ${geist.className}`}
+    <div className={`${styles.container} ${inter.className}`}
          onMouseMove={handleMouseMove}
          onMouseUp={handleMouseUp}
          onMouseLeave={handleMouseUp}
          style={{
-           background: `repeating-conic-gradient(${currentTheme.primary} 0% 25%, ${currentTheme.secondary} 0% 50%) 50% / 2px 2px`
+           background: `repeating-conic-gradient(
+             from 0deg,
+             ${currentTheme.primary}15 0deg 90deg,
+             ${currentTheme.secondary}15 90deg 180deg,
+             ${currentTheme.primary}15 180deg 270deg,
+             ${currentTheme.secondary}15 270deg 360deg
+           ) 50% / 20px 20px`
          }}>
       <div className={styles.buttonContainer}>
         <Link href="/" className={styles.backButton} style={{

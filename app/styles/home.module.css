@@ -70,7 +70,7 @@
   width: 100%;
   max-width: 472px;
   background: rgba(32, 37, 61, 0.08);
-  border-radius: 16px;
+  border-radius: 8px;
   border: 1px solid rgba(64, 224, 208, 0.1);
   backdrop-filter: blur(8px);
   overflow: hidden;
@@ -113,8 +113,8 @@
 
 .card {
   height: 100%;
-  background: rgba(32, 37, 61, 0.3);
-  border-radius: 12px;
+  background: rgba(33, 37, 60, 0.5);
+  border-radius: 6px;
   padding: 1.25rem;
   color: white;
   position: relative;
@@ -130,7 +130,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 12px;
+  border-radius: 6px;
   padding: 1px;
   background: linear-gradient(
     45deg,
@@ -145,7 +145,7 @@
 }
 
 .card:hover {
-  background: rgba(32, 37, 61, 0.4);
+  background: #2B3150;
   transform: translateY(-2px) scale(1.02);
   border-color: transparent;
   backdrop-filter: blur(8px);
