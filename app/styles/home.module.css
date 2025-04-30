@@ -126,7 +126,6 @@
 
 .card {
   height: 100%;
-  background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
   padding: 1.5rem;
   color: white;
@@ -138,11 +137,14 @@
   transform-origin: center;
   backdrop-filter: blur(4px);
   animation: cardEntrance 0.5s cubic-bezier(0.2, 0, 0, 1) backwards;
+  /* More subtle background that works on iOS */
   background: linear-gradient(
     to bottom right,
-    rgba(26, 27, 46, 0.95),
-    rgba(32, 33, 53, 0.95)
+    rgba(26, 27, 46, 0.75),
+    rgba(32, 33, 53, 0.65)
   );
+  /* Add a subtle border glow */
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 .card::before {
@@ -152,11 +154,12 @@
 .card:hover {
   background: linear-gradient(
     to bottom right,
-    rgba(26, 27, 46, 0.98),
-    rgba(32, 33, 53, 0.98)
+    rgba(26, 27, 46, 0.85),
+    rgba(32, 33, 53, 0.75)
   );
   transform: translateY(-2px);
   border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .card h3 {
@@ -257,16 +260,44 @@
   color: rgba(64, 224, 208, 0.9);
 }
 
-/* Card variants */
-.linkCard:nth-of-type(1) .card,
-.linkCard:nth-of-type(2) .card,
-.linkCard:nth-of-type(3) .card,
-.linkCard:nth-of-type(4) .card,
+/* Card variants with subtle differences */
+.linkCard:nth-of-type(1) .card {
+  background: linear-gradient(
+    to bottom right,
+    rgba(26, 27, 46, 0.75),
+    rgba(32, 33, 53, 0.65)
+  );
+}
+
+.linkCard:nth-of-type(2) .card {
+  background: linear-gradient(
+    to bottom right,
+    rgba(32, 33, 53, 0.75),
+    rgba(26, 27, 46, 0.65)
+  );
+}
+
+.linkCard:nth-of-type(3) .card {
+  background: linear-gradient(
+    to bottom right,
+    rgba(28, 29, 48, 0.75),
+    rgba(34, 35, 55, 0.65)
+  );
+}
+
+.linkCard:nth-of-type(4) .card {
+  background: linear-gradient(
+    to bottom right,
+    rgba(30, 31, 50, 0.75),
+    rgba(36, 37, 57, 0.65)
+  );
+}
+
 .linkCard:nth-of-type(5) .card {
   background: linear-gradient(
     to bottom right,
-    rgba(26, 27, 46, 0.95),
-    rgba(32, 33, 53, 0.95)
+    rgba(28, 29, 48, 0.75),
+    rgba(34, 35, 55, 0.65)
   );
 }
 
