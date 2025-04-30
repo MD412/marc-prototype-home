@@ -36,6 +36,14 @@ export default function Home() {
       <div className={styles.mainContent}>
         <header className={styles.header}>
           <h1>Marc's Prototypes</h1>
+          <a 
+            href="https://twitter.com/Zanzoy" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className={styles.twitterLink}
+          >
+            @Zanzoy
+          </a>
         </header>
 
         <main className={styles.grid}>
