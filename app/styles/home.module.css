@@ -138,6 +138,11 @@
   transform-origin: center;
   backdrop-filter: blur(4px);
   animation: cardEntrance 0.5s cubic-bezier(0.2, 0, 0, 1) backwards;
+  background: linear-gradient(
+    to bottom right,
+    rgba(26, 27, 46, 0.95),
+    rgba(32, 33, 53, 0.95)
+  );
 }
 
 .card::before {
@@ -145,7 +150,11 @@
 }
 
 .card:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(
+    to bottom right,
+    rgba(26, 27, 46, 0.98),
+    rgba(32, 33, 53, 0.98)
+  );
   transform: translateY(-2px);
   border-color: rgba(255, 255, 255, 0.08);
 }
@@ -249,24 +258,16 @@
 }
 
 /* Card variants */
-.linkCard:nth-of-type(1) .card {
-  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-}
-
-.linkCard:nth-of-type(2) .card {
-  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
-}
-
-.linkCard:nth-of-type(3) .card {
-  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
-}
-
-.linkCard:nth-of-type(4) .card {
-  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-}
-
+.linkCard:nth-of-type(1) .card,
+.linkCard:nth-of-type(2) .card,
+.linkCard:nth-of-type(3) .card,
+.linkCard:nth-of-type(4) .card,
 .linkCard:nth-of-type(5) .card {
-  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  background: linear-gradient(
+    to bottom right,
+    rgba(26, 27, 46, 0.95),
+    rgba(32, 33, 53, 0.95)
+  );
 }
 
 /* Enhance card animations */
