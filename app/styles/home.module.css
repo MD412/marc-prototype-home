@@ -137,25 +137,31 @@
   transform-origin: center;
   backdrop-filter: blur(4px);
   animation: cardEntrance 0.5s cubic-bezier(0.2, 0, 0, 1) backwards;
+}
+
+.cardBackground {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
   background: linear-gradient(
     to bottom right,
     rgba(26, 27, 46, 0.45),
     rgba(32, 33, 53, 0.45)
   );
+  transition: all 0.3s ease;
 }
 
-.card::before {
-  display: none;
-}
-
-.card:hover {
+.card:hover .cardBackground {
   background: linear-gradient(
     to bottom right,
     rgba(26, 27, 46, 0.5),
     rgba(32, 33, 53, 0.5)
   );
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.card h3, .card p {
+  position: relative;
+  z-index: 1;
 }
 
 .card h3 {

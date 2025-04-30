@@ -59,6 +59,7 @@ export default function Home() {
               className={styles.linkCard}
             >
               <div className={styles.card}>
+                <div className={styles.cardBackground} />
                 <h3>{prototype.title}</h3>
                 <p>{prototype.description}</p>
               </div>
