@@ -183,7 +183,7 @@
 
 /* Update the displayText class to handle the wavy effect */
 .displayText.effectWavy {
-  font-size: clamp(3rem, 10vw, 8rem);
+  font-size: clamp(2rem, 8vw, 5rem);
   letter-spacing: 0.05em;
 }
 
