@@ -7,6 +7,7 @@ import styles from './styles.module.css';
 export default function TypographyExperiments() {
   const [text, setText] = useState("Type something magical");
   const [effect, setEffect] = useState("glitch");
+  const [messages, setMessages] = useState<Array<{text: string, effect: string}>>([]);
 
   const effects = {
     "glitch": styles.effectGlitch,
@@ -17,6 +18,7 @@ export default function TypographyExperiments() {
 
   // Function to render circular text
   const renderCircularText = (text: string) => {
+    
     const characters = text.split('');
     const radius = 120;
     const totalChars = characters.length;
@@ -138,29 +140,74 @@ export default function TypographyExperiments() {
     }
   };
 
+  const saveMessage = () => {
+    if (text.trim()) {
+      setMessages(prev => [...prev, { text, effect }]);
+      setText("Type something magical");
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Link href="/" className={styles.backLink}>
         ← Back to Prototypes
       </Link>
       
-      <main className={styles.main}>
+      <div className={styles.currentTextOverlay}>
         <div 
-          className={`${styles.displayText} ${effects[effect as keyof typeof effects]}`}
-          data-text={text}
+          className={`${styles.displayText} ${styles.currentText} ${effects[effect as keyof typeof effects]}`}
         >
           {renderText()}
         </div>
+      </div>
+
+      <main className={styles.main}>
+        <div className={styles.messageHistory}>
+          {messages.map((msg, index) => (
+            <div 
+              key={index}
+              className={`${styles.displayText} ${effects[msg.effect as keyof typeof effects]}`}
+            >
+              {(() => {
+                switch(msg.effect) {
+                  case 'circular':
+                    return renderCircularText(msg.text);
+                  case 'wavy':
+                    return renderWavyText(msg.text);
+                  case 'glitch':
+                    return renderGlitchText(msg.text);
+                  case 'gradient':
+                    return renderGradientText(msg.text);
+                  default:
+                    return msg.text;
+                }
+              })()}
+            </div>
+          ))}
+        </div>
 
         <div className={styles.controls}>
-          <input
-            type="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            className={styles.textInput}
-            placeholder="Enter your text..."
-            maxLength={50}
-          />
+          <div className={styles.inputContainer}>
+            <input
+              type="text"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              className={styles.textInput}
+              placeholder="Enter your text..."
+              maxLength={50}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  saveMessage();
+                }
+              }}
+            />
+            <button 
+              className={styles.saveButton}
+              onClick={saveMessage}
+            >
+              Save
+            </button>
+          </div>
           
           <div className={styles.effectControls}>
             {Object.keys(effects).map((effectName) => (

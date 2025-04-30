@@ -18,11 +18,6 @@ export default function Home() {
       path: '/prototypes/digital-piano'
     },
     {
-      title: 'Marc-1',
-      description: 'A modern interface kit',
-      path: '/prototypes/Marc-1'
-    },
-    {
       title: 'Getting started',
       description: 'Learn how to create and customize your prototypes',
       path: '/prototypes/example'
