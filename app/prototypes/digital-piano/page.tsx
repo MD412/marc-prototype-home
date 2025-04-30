@@ -31,6 +31,43 @@ interface Note {
   duration: number; // in milliseconds
 }
 
+const themes = {
+  quantum: {
+    name: 'Quantum',
+    primary: '#00ffff',
+    secondary: '#ff00ff',
+    bgStart: '#001a2c',
+    bgEnd: '#003344',
+    accent: 'rgba(0, 255, 255, 0.2)'
+  },
+  eva: {
+    name: 'EVA-01',
+    primary: '#a020f0',
+    secondary: '#d891ef',
+    bgStart: '#1a0044',
+    bgEnd: '#0f0022',
+    accent: 'rgba(160, 32, 240, 0.15)'
+  },
+  matrix: {
+    name: 'Matrix',
+    primary: '#00ff00',
+    secondary: '#39ff14',
+    bgStart: '#001a00',
+    bgEnd: '#002200',
+    accent: 'rgba(0, 255, 0, 0.2)'
+  },
+  neon: {
+    name: 'Neon',
+    primary: '#ff0000',
+    secondary: '#ff4d4d',
+    bgStart: '#1a0000',
+    bgEnd: '#330000',
+    accent: 'rgba(255, 0, 0, 0.2)'
+  }
+};
+
+type ThemeKey = keyof typeof themes;
+
 export default function DigitalPiano() {
   const [activeNotes, setActiveNotes] = useState<Set<string>>(new Set());
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
@@ -45,6 +82,12 @@ export default function DigitalPiano() {
   const noteStatesRef = useRef<{ [key: string]: NoteState }>({});
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
+  const [currentTheme, setCurrentTheme] = useState<ThemeKey>('quantum');
+
+  // Initialize audio context on component mount
+  useEffect(() => {
+    initializeAudio();
+  }, []);
 
   const initializeAudio = useCallback(() => {
     if (!audioContextRef.current) {
@@ -174,11 +217,17 @@ export default function DigitalPiano() {
       animationFrameRef.current = requestAnimationFrame(draw);
       analyser.getByteTimeDomainData(dataArray);
 
-      ctx.fillStyle = 'rgba(10, 10, 31, 0.2)';
+      // Get the current theme colors
+      const wrapper = canvas.closest(`.${styles.wrapper}`)!;
+      const themeColor = getComputedStyle(wrapper).getPropertyValue('--theme-primary');
+      const themeBgStart = getComputedStyle(wrapper).getPropertyValue('--theme-bg-start');
+
+      // Use theme background color with opacity
+      ctx.fillStyle = `${themeBgStart}cc`; // cc = 80% opacity
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.lineWidth = 2;
-      ctx.strokeStyle = '#00ffff';
+      ctx.strokeStyle = themeColor;
       ctx.beginPath();
 
       const sliceWidth = canvas.width / dataArray.length;
@@ -202,7 +251,7 @@ export default function DigitalPiano() {
     };
 
     draw();
-  }, [analyser]);
+  }, [analyser, currentTheme]);
 
   const stopAllNotes = () => {
     Object.keys(noteStatesRef.current).forEach(note => {
@@ -216,13 +265,44 @@ export default function DigitalPiano() {
     return 440 * Math.pow(2, (noteIndex - 9) / 12 + (octave - 4));
   };
 
+  // Update theme CSS variables when theme changes
+  useEffect(() => {
+    const theme = themes[currentTheme];
+    const root = document.querySelector(`.${styles.wrapper}`) as HTMLElement;
+    if (root) {
+      root.style.setProperty('--theme-primary', theme.primary);
+      root.style.setProperty('--theme-secondary', theme.secondary);
+      root.style.setProperty('--theme-bg-start', theme.bgStart);
+      root.style.setProperty('--theme-bg-end', theme.bgEnd);
+      root.style.setProperty('--theme-accent', theme.accent);
+    }
+  }, [currentTheme]);
+
   return (
-    <>
+    <div className={styles.wrapper}>
+      {audioContext && analyser && (
+        <VaporwaveBackground
+          audioContext={audioContext}
+          analyser={analyser}
+          waveform={waveform}
+          theme={themes[currentTheme]}
+        />
+      )}
       <div className={styles.background} />
       <div className={styles.starfield} />
       <Link href="/" className={styles.backButton}>
         ← Back to Prototypes
       </Link>
+      <div className={styles.themePicker}>
+        {Object.entries(themes).map(([key, theme]) => (
+          <button
+            key={key}
+            className={`${styles.themeButton} ${styles[key]} ${currentTheme === key ? styles.active : ''}`}
+            onClick={() => setCurrentTheme(key as ThemeKey)}
+            title={theme.name}
+          />
+        ))}
+      </div>
       <div className={styles.container} onClick={initializeAudio}>
         <div className={styles.titleBar}>
           <div className={styles.windowControls}>
@@ -389,13 +469,6 @@ export default function DigitalPiano() {
           </div>
         </div>
       </div>
-      {audioContext && analyser && (
-        <VaporwaveBackground 
-          audioContext={audioContext} 
-          analyser={analyser}
-          waveform={waveform}
-        />
-      )}
-    </>
+    </div>
   );
 } 
