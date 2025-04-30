@@ -119,14 +119,14 @@ export default function VaporwaveBackground({ audioContext, analyser, waveform, 
         const distanceFromCenter = Math.sqrt(x * x + z * z);
 
         if (waveform === 'sine') {
-          const radialWave = Math.sin(distanceFromCenter * 0.5 - time * 2) * avgIntensity;
-          const freqWave = Math.sin(x * 0.2 + time * 3) * trebleIntensity +
-                          Math.cos(z * 0.2 + time * 2) * bassIntensity;
-          deformation = (radialWave * 12.0) + (freqWave * 6.0);
+          const radialWave = Math.sin(distanceFromCenter * 0.5 - time * 3) * avgIntensity;
+          const freqWave = Math.sin(x * 0.2 + time * 4) * trebleIntensity +
+                          Math.cos(z * 0.2 + time * 3) * bassIntensity;
+          deformation = (radialWave * 24.0) + (freqWave * 12.0);
         } else {
-          const wave = Math.sin(distanceFromCenter * 0.5 - avgIntensity * 10) * avgIntensity;
-          const intensity = waveform === 'square' ? 6.0 : 
-                          waveform === 'sawtooth' ? 4.0 : 3.0;
+          const wave = Math.sin(distanceFromCenter * 0.5 - time * 2) * avgIntensity;
+          const intensity = waveform === 'square' ? 12.0 : 
+                          waveform === 'sawtooth' ? 8.0 : 6.0;
           deformation = wave * intensity;
         }
         

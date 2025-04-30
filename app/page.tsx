@@ -8,6 +8,11 @@ import ParticleField from './components/ParticleField';
 export default function Home() {
   const prototypes = [
     {
+      title: 'Typography Experiments',
+      description: 'Interactive typography playground with creative CSS effects',
+      path: '/prototypes/typography-experiments'
+    },
+    {
       title: 'Digital Piano',
       description: 'A retro-styled digital piano with Mac OS aesthetics',
       path: '/prototypes/digital-piano'
