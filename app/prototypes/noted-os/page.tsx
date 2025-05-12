@@ -8,10 +8,22 @@
 // 4. Rename and customize the component and styles as needed
 
 import { useState, useEffect, useRef } from 'react';
-import { Rnd } from 'react-rnd';
-import ReactQuill from 'react-quill';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import styles from './styles.module.css';
+
+// Dynamically import components that use browser APIs with ssr: false
+const ReactQuill = dynamic(() => import('react-quill'), {
+  ssr: false,
+  loading: () => <div className={styles.canvasLoading}>Loading Editor...</div>
+});
+
+const RndComponent = dynamic(() => import('react-rnd').then(mod => mod.Rnd), {
+  ssr: false,
+  loading: () => <div className={styles.canvasLoading}>Loading Window...</div>
+});
+
+// Import the CSS without SSR conflict
 import 'react-quill/dist/quill.snow.css';
 
 interface Point {
@@ -47,8 +59,16 @@ export default function NotedOS() {
   const canvasRefs = useRef<{ [key: string]: HTMLCanvasElement | null }>({});
   const contextRefs = useRef<{ [key: string]: CanvasRenderingContext2D | null }>({});
   const currentPathRef = useRef<Point[]>([]);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    // Only run on client-side
+    if (!isClient) return;
+    
     // Load saved windows from localStorage
     try {
       const savedWindows = localStorage.getItem('notedOsWindows');
@@ -70,18 +90,24 @@ export default function NotedOS() {
     } catch (error) {
       console.error("Failed to load windows from localStorage:", error);
     }
-  }, []);
+  }, [isClient]);
 
   useEffect(() => {
+    // Only run on client-side
+    if (!isClient) return;
+    
     // Save windows to localStorage whenever they change
     try {
       localStorage.setItem('notedOsWindows', JSON.stringify(windows));
     } catch (error) {
       console.error("Failed to save windows to localStorage:", error);
     }
-  }, [windows]);
+  }, [windows, isClient]);
 
   useEffect(() => {
+    // Only run on client-side
+    if (!isClient) return;
+    
     // Initialize/redraw canvases when window state changes
     windows.forEach(window => {
       if (window.type === 'canvas') {
@@ -111,7 +137,7 @@ export default function NotedOS() {
         }
       }
     });
-  }, [windows]);
+  }, [windows, isClient]);
 
   const createNewWindow = (type: 'note' | 'canvas') => {
     // Fixed position in center of screen
@@ -294,6 +320,10 @@ export default function NotedOS() {
     }));
   };
 
+  if (!isClient) {
+    return <div className={styles.desktop}>Loading NotedOS...</div>;
+  }
+
   return (
     <div className={styles.desktop}>
       <div className={styles.floatingLeaf1}>🌸</div>
@@ -315,7 +345,7 @@ export default function NotedOS() {
       </div>
 
       {windows.map((window) => (
-        <Rnd
+        <RndComponent
           key={window.id}
           position={{ x: window.position.x, y: window.position.y }}
           size={window.isMinimized 
@@ -419,7 +449,7 @@ export default function NotedOS() {
               )}
             </div>
           )}
-        </Rnd>
+        </RndComponent>
       ))}
     </div>
   );
