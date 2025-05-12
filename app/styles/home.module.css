@@ -124,6 +124,7 @@
   text-decoration: none;
   display: block;
   position: relative;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .card {
@@ -134,64 +135,22 @@
   color: white;
   position: relative;
   border: 1.5px solid rgba(255, 255, 255, 0.03);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s ease;
   display: flex;
   flex-direction: column;
-  transform-origin: center;
+  gap: 0.5rem;
   backdrop-filter: blur(4px);
   animation: cardEntrance 0.5s cubic-bezier(0.2, 0, 0, 1) backwards;
 }
 
-.card::before {
-  content: '';
-  position: absolute;
-  inset: -1.5px;
-  border-radius: 13.5px;
-  padding: 1.5px;
-  background: linear-gradient(
-    45deg,
-    rgba(64, 224, 208, 0.5),
-    rgba(108, 99, 255, 0.5),
-    rgba(255, 107, 107, 0.5),
-    rgba(64, 224, 208, 0.5)
-  );
-  background-size: 300% 300%;
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.card:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.card:hover::before {
-  opacity: 1;
-  animation: gradientBorder 3s ease infinite;
-}
-
-@keyframes gradientBorder {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
 .card h3 {
-  margin: 0 0 0.5rem 0;
+  margin: 0;
   font-size: 1.25rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.95);
   letter-spacing: -0.3px;
+  transition: all 0.4s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .card p {
@@ -199,6 +158,21 @@
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.875rem;
   line-height: 1.5;
+  transition: all 0.4s ease;
+}
+
+.card:hover {
+  background: rgba(64, 224, 208, 0.1);
+  border-color: rgba(64, 224, 208, 0.4);
+  transform: translateY(-2px);
+}
+
+.card:hover h3 {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.card:hover p {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* Ambient glow points */
@@ -284,27 +258,6 @@
   color: rgba(64, 224, 208, 0.9);
 }
 
-/* Card variants */
-.linkCard:nth-of-type(1) .card {
-  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-}
-
-.linkCard:nth-of-type(2) .card {
-  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
-}
-
-.linkCard:nth-of-type(3) .card {
-  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
-}
-
-.linkCard:nth-of-type(4) .card {
-  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-}
-
-.linkCard:nth-of-type(5) .card {
-  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
-}
-
 /* Enhance card animations */
 @keyframes cardEntrance {
   from {
@@ -316,12 +269,6 @@
     transform: translateY(0);
   }
 }
-
-.linkCard:nth-of-type(1) .card { animation-delay: 0s; }
-.linkCard:nth-of-type(2) .card { animation-delay: 0.1s; }
-.linkCard:nth-of-type(3) .card { animation-delay: 0.2s; }
-.linkCard:nth-of-type(4) .card { animation-delay: 0.3s; }
-.linkCard:nth-of-type(5) .card { animation-delay: 0.4s; }
 
 /* iOS Safari specific fix */
 @supports (-webkit-touch-callout: none) {
@@ -347,15 +294,6 @@
     background: rgba(20, 22, 33, 0.95) !important;
     border: 1.5px solid rgba(64, 224, 208, 0.3) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-  }
-
-  /* Override card variants */
-  .linkCard:nth-of-type(1) .card,
-  .linkCard:nth-of-type(2) .card,
-  .linkCard:nth-of-type(3) .card,
-  .linkCard:nth-of-type(4) .card,
-  .linkCard:nth-of-type(5) .card {
-    background: rgba(16, 18, 28, 0.95) !important;
   }
 
   .card h3 {
@@ -389,12 +327,17 @@
     border: 1.5px solid rgba(64, 224, 208, 0.3) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
   }
+}
 
-  .linkCard:nth-of-type(1) .card,
-  .linkCard:nth-of-type(2) .card,
-  .linkCard:nth-of-type(3) .card,
-  .linkCard:nth-of-type(4) .card,
-  .linkCard:nth-of-type(5) .card {
-    background: rgba(16, 18, 28, 0.8) !important;
-  }
-} 
+/* Add this script to your page component to track mouse position */
+/* 
+document.addEventListener('mousemove', (e) => {
+  document.querySelectorAll('.card').forEach(card => {
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / card.offsetWidth) * 100;
+    const y = ((e.clientY - rect.top) / card.offsetHeight) * 100;
+    card.style.setProperty('--mouse-x', `${x}%`);
+    card.style.setProperty('--mouse-y', `${y}%`);
+  });
+});
+*/ 
