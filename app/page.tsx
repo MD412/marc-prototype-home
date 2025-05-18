@@ -8,6 +8,11 @@ import ParticleField from './components/ParticleField';
 export default function Home() {
   const prototypes = [
     {
+      title: 'My Bookshelf',
+      description: 'A reading tracker powered by Notion to manage your book collection',
+      path: '/prototypes/my-bookshelf'
+    },
+    {
       title: 'Noted OS',
       description: 'A modern note-taking app with classic OS interface aesthetics',
       path: '/prototypes/noted-os'
