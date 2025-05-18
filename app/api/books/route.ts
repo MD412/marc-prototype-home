@@ -1,5 +1,16 @@
 import { NextResponse } from 'next/server';
 import { Client } from '@notionhq/client';
+import { PageObjectResponse, RichTextItemResponse, SelectPropertyItemObjectResponse, FilesPropertyItemObjectResponse, NumberPropertyItemObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+
+// Define the expected property types for our database
+interface BookProperties {
+  Title: { type: "title"; title: Array<RichTextItemResponse>; id: string };
+  Author: { type: "rich_text"; rich_text: Array<RichTextItemResponse>; id: string };
+  Genre: SelectPropertyItemObjectResponse;
+  "Cover Image": FilesPropertyItemObjectResponse;
+  Rating: NumberPropertyItemObjectResponse;
+  Review: { type: "rich_text"; rich_text: Array<RichTextItemResponse>; id: string };
+}
 
 export async function GET() {
   try {
@@ -30,20 +41,29 @@ export async function GET() {
 
     // Map the Notion response to our book format
     const books = response.results.map((page) => {
-      const properties = page.properties as any;
+      // Assert the page type as PageObjectResponse with our BookProperties
+      const notionPage = page as PageObjectResponse & { properties: BookProperties };
+      const { properties } = notionPage;
       
+      // Get the cover image URL, handling both file types
+      const coverImageFile = properties['Cover Image'].files[0];
+      const coverImageUrl = coverImageFile?.type === 'file' 
+        ? coverImageFile.file.url
+        : coverImageFile?.type === 'external' 
+          ? coverImageFile.external.url 
+          : '';
+
       // Extract and format book properties
       return {
-        id: page.id,
-        title: properties.Title?.title?.[0]?.plain_text || 'Untitled',
-        author: properties.Author?.rich_text?.[0]?.plain_text || 'Unknown Author',
-        genre: properties.Genre?.select?.name || '',
-        coverImage: properties['Cover Image']?.files?.[0]?.file?.url || 
-                   properties['Cover Image']?.files?.[0]?.external?.url || '',
-        rating: properties.Rating?.number || 0,
-        review: properties.Review?.rich_text?.[0]?.plain_text || '',
-        createdTime: page.created_time,
-        lastEditedTime: page.last_edited_time,
+        id: notionPage.id,
+        title: properties.Title.title[0]?.plain_text || 'Untitled',
+        author: properties.Author.rich_text[0]?.plain_text || 'Unknown Author',
+        genre: properties.Genre.select?.name || '',
+        coverImage: coverImageUrl,
+        rating: properties.Rating.number || 0,
+        review: properties.Review.rich_text[0]?.plain_text || '',
+        createdTime: notionPage.created_time,
+        lastEditedTime: notionPage.last_edited_time,
       };
     });
 
