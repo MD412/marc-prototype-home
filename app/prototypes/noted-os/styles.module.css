@@ -133,64 +133,42 @@
 }
 
 .backButton {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
+  background: #8a92d1;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
   border-radius: 8px;
-  padding: 10px 18px;
-  color: #493c5c;
-  text-decoration: none;
   font-weight: 500;
-  box-shadow: 0 4px 20px rgba(114, 91, 143, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  text-decoration: none;
   transition: all 0.2s ease;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .backButton:hover {
-  background: linear-gradient(to right, rgba(139, 171, 217, 0.3), rgba(200, 162, 200, 0.3));
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  background: #c8a2c8;
   transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.topBar {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  gap: 12px;
+  z-index: 1000;
 }
 
 .actionButtons {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 12px 22px;
-  box-shadow: 0 4px 20px rgba(114, 91, 143, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.3);
   display: flex;
   gap: 12px;
-  z-index: 1000;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-}
-
-.toolbar {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 12px 22px;
-  box-shadow: 0 4px 20px rgba(114, 91, 143, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.3);
-  display: flex;
-  gap: 12px;
-  z-index: 1000;
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  margin-left: auto;
 }
 
 .toolbarButton {
-  background: linear-gradient(to bottom, #a3bce2 0%, #8a92d1 100%);
+  background: #8a92d1;
   color: #fff;
   border: none;
   padding: 8px 16px;
@@ -199,18 +177,17 @@
   font-weight: 500;
   transition: all 0.2s ease;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .toolbarButton:hover {
-  background: linear-gradient(to bottom, #c8a2c8 0%, #967bb6 100%);
+  background: #c8a2c8;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .window {
   background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(8px);
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.5);
   overflow: hidden;
@@ -218,6 +195,8 @@
   border: 1px solid rgba(255, 255, 255, 0.7);
   animation: fadeIn 0.3s ease-out;
   padding: 0;
+  backdrop-filter: blur(8px);
+  position: relative;
 }
 
 @keyframes fadeIn {
@@ -239,34 +218,89 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
+.dragHandle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  cursor: move;
+  z-index: 10;
+  background: transparent;
+}
+
 .windowHeader {
-  background: linear-gradient(to right, rgba(139, 171, 217, 0.3), rgba(200, 162, 200, 0.3));
-  padding: 10px 15px;
+  padding: 10px 15px 10px 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  cursor: move;
   user-select: none;
-  touch-action: none;
   height: 45px;
   box-sizing: border-box;
+  position: relative;
+  border-radius: 12px;
+  margin: 0;
+  z-index: 1;
+  cursor: move;
 }
 
-.window.minimized .windowHeader {
-  border-bottom: none;
+.windowHeader::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, rgba(139, 171, 217, 0.3), rgba(200, 162, 200, 0.3));
+  border-radius: 12px;
+  z-index: -1;
 }
 
 .windowTitle {
   font-weight: 500;
   color: #493c5c;
-  pointer-events: none;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.titleText {
+  cursor: text;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.titleText:hover {
+  background: rgba(200, 162, 200, 0.3);
+  box-shadow: 0 0 0 1px rgba(200, 162, 200, 0.5);
+}
+
+.titleInput {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  color: inherit;
+  width: 200px;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(200, 162, 200, 0.5);
+  cursor: text;
+}
+
+.titleInput:focus {
+  box-shadow: 0 0 0 2px rgba(138, 146, 209, 0.5);
 }
 
 .windowControls {
   display: flex;
   gap: 8px;
+  position: relative;
 }
 
 .windowControl {
@@ -291,10 +325,13 @@
 }
 
 .windowContent {
-  padding: 15px;
+  padding: 0;
   height: calc(100% - 45px);
   overflow-y: auto;
   box-sizing: border-box;
+  position: relative;
+  margin-top: 0;
+  overflow: visible;
 }
 
 .windowContent::-webkit-scrollbar {
@@ -315,53 +352,76 @@
   background: rgba(200, 162, 200, 0.5);
 }
 
-.editor {
+.editorWrapper {
+  display: flex;
+  flex-direction: row;
   height: 100%;
-  background: transparent;
+  gap: 10px;
 }
 
-.editor :global(.ql-container) {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 16px;
-  height: calc(100% - 42px);
-  border: none !important;
-  background: transparent;
-  color: #493c5c;
-  box-sizing: border-box;
+.editorToolbar {
+  width: 40px;
+  flex-shrink: 0;
 }
 
-.editor :global(.ql-toolbar) {
+.editorToolbar :global(.ql-toolbar) {
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.6) !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.editor :global(.ql-toolbar button) {
+.editorToolbar :global(.ql-toolbar .ql-formats) {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 !important;
+}
+
+.editorToolbar :global(.ql-container) {
+  display: none;
+}
+
+.editorContent {
+  flex: 1;
+}
+
+.editorContent :global(.ql-toolbar) {
+  display: none;
+}
+
+.editorContent :global(.ql-container) {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  border: none !important;
+  background: transparent;
+  color: #493c5c;
+  height: 100%;
+}
+
+.editorContent :global(.ql-editor) {
+  padding: 0;
+}
+
+/* Button styles */
+.editorToolbar :global(.ql-toolbar button) {
+  width: 28px;
+  height: 28px;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #493c5c !important;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
-.editor :global(.ql-toolbar button.ql-active),
-.editor :global(.ql-toolbar button:hover) {
-  color: #8a92d1 !important;
-}
-
-.editor :global(.ql-toolbar .ql-stroke) {
-  stroke: #493c5c !important;
-}
-
-.editor :global(.ql-toolbar .ql-stroke.ql-fill) {
-  fill: #493c5c !important;
-}
-
-.editor :global(.ql-toolbar .ql-active .ql-stroke),
-.editor :global(.ql-toolbar button:hover .ql-stroke) {
-  stroke: #8a92d1 !important;
-}
-
-.editor :global(.ql-toolbar .ql-active .ql-stroke.ql-fill),
-.editor :global(.ql-toolbar button:hover .ql-stroke.ql-fill) {
-  fill: #8a92d1 !important;
+.editorToolbar :global(.ql-toolbar button:hover) {
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .canvas {
@@ -403,4 +463,91 @@
   font-size: 14px;
   background: #fff;
   border-radius: 8px;
+}
+
+.editor {
+  height: 100%;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor :global(.ql-toolbar) {
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  display: inline-flex;
+  flex-wrap: nowrap;
+  padding: 4px;
+  gap: 2px;
+  order: 1;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: fit-content;
+  margin: 8px 16px;
+}
+
+.editor :global(.ql-container) {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  flex: 1;
+  border: none !important;
+  background: transparent;
+  color: #493c5c;
+  box-sizing: border-box;
+  order: 2;
+}
+
+.editor :global(.ql-editor) {
+  padding: 0 20px 20px;
+  min-height: 100%;
+  line-height: 1.6;
+}
+
+.editor :global(.ql-toolbar .ql-formats) {
+  display: flex;
+  gap: 2px;
+  margin: 0 !important;
+  padding: 0 2px;
+}
+
+.editor :global(.ql-toolbar button) {
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #493c5c !important;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+
+.editor :global(.ql-toolbar button:hover) {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.editor :global(.ql-toolbar button.ql-active) {
+  background-color: rgba(138, 146, 209, 0.15);
+  color: #8a92d1 !important;
+}
+
+.editor :global(.ql-toolbar .ql-stroke) {
+  stroke: #493c5c !important;
+}
+
+.editor :global(.ql-toolbar .ql-stroke.ql-fill) {
+  fill: #493c5c !important;
+}
+
+.editor :global(.ql-toolbar .ql-active .ql-stroke),
+.editor :global(.ql-toolbar button:hover .ql-stroke) {
+  stroke: #8a92d1 !important;
+}
+
+.editor :global(.ql-toolbar .ql-active .ql-stroke.ql-fill),
+.editor :global(.ql-toolbar button:hover .ql-stroke.ql-fill) {
+  fill: #8a92d1 !important;
 }

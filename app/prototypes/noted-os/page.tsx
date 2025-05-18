@@ -26,6 +26,20 @@ const RndComponent = dynamic(() => import('react-rnd').then(mod => mod.Rnd), {
 // Import the CSS without SSR conflict
 import 'react-quill/dist/quill.snow.css';
 
+// Add Quill modules configuration
+const quillModules = {
+  toolbar: [
+    ['bold', 'italic', 'underline', 'link'],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    ['clean']
+  ]
+};
+
+const quillFormats = [
+  'bold', 'italic', 'underline', 'link',
+  'list', 'bullet'
+];
+
 interface Point {
   x: number;
   y: number;
@@ -47,6 +61,7 @@ interface Window {
   isMinimized: boolean;
   drawingActions?: DrawingAction[];
   zIndex: number;
+  isEditingTitle?: boolean;
 }
 
 export default function NotedOS() {
@@ -60,6 +75,7 @@ export default function NotedOS() {
   const contextRefs = useRef<{ [key: string]: CanvasRenderingContext2D | null }>({});
   const currentPathRef = useRef<Point[]>([]);
   const [isClient, setIsClient] = useState(false);
+  const [mountEditor, setMountEditor] = useState(true);
 
   useEffect(() => {
     setIsClient(true);
@@ -139,6 +155,15 @@ export default function NotedOS() {
     });
   }, [windows, isClient]);
 
+  // Add cleanup effect when windows change
+  useEffect(() => {
+    return () => {
+      // Force cleanup of any existing Quill instances
+      setMountEditor(false);
+      setTimeout(() => setMountEditor(true), 0);
+    };
+  }, [windows]);
+
   const createNewWindow = (type: 'note' | 'canvas') => {
     // Fixed position in center of screen
     const centerX = typeof window !== 'undefined' ? (window.innerWidth / 2) - 200 : 200;
@@ -156,7 +181,8 @@ export default function NotedOS() {
       size: { width: 400, height: 400 },
       isMinimized: false,
       drawingActions: type === 'canvas' ? [] : undefined,
-      zIndex: newZIndex
+      zIndex: newZIndex,
+      isEditingTitle: type === 'note' // Automatically enable title editing for new notes
     };
     setWindows([...windows, newWindow]);
     setActiveWindow(newWindow.id);
@@ -165,6 +191,24 @@ export default function NotedOS() {
   const updateWindowContent = (id: string, content: string) => {
     setWindows(windows.map(window => 
       window.id === id ? { ...window, content } : window
+    ));
+  };
+
+  const updateWindowTitle = (id: string, title: string, keepEditing = true) => {
+    setWindows(windows.map(window => 
+      window.id === id ? { ...window, title, isEditingTitle: keepEditing } : window
+    ));
+  };
+
+  const finishEditingTitle = (id: string) => {
+    setWindows(windows.map(window => 
+      window.id === id ? { ...window, isEditingTitle: false } : window
+    ));
+  };
+
+  const startEditingTitle = (id: string) => {
+    setWindows(windows.map(window => 
+      window.id === id ? { ...window, isEditingTitle: true } : window
     ));
   };
 
@@ -331,17 +375,18 @@ export default function NotedOS() {
       <div className={styles.floatingLeaf3}>🍃</div>
       <div className={styles.floatingLeaf4}>🌸</div>
       
-      <Link href="/" className={styles.backButton}>
-        ← Back
-      </Link>
-      
-      <div className={styles.actionButtons}>
-        <button onClick={() => createNewWindow('note')} className={styles.toolbarButton}>
-          New Note
-        </button>
-        <button onClick={() => createNewWindow('canvas')} className={styles.toolbarButton}>
-          New Canvas
-        </button>
+      <div className={styles.topBar}>
+        <Link href="/" className={styles.backButton}>
+          ← Back
+        </Link>
+        <div className={styles.actionButtons}>
+          <button onClick={() => createNewWindow('note')} className={styles.toolbarButton}>
+            New Note
+          </button>
+          <button onClick={() => createNewWindow('canvas')} className={styles.toolbarButton}>
+            New Canvas
+          </button>
+        </div>
       </div>
 
       {windows.map((window) => (
@@ -358,7 +403,7 @@ export default function NotedOS() {
           bounds="parent"
           dragHandleClassName={styles.windowHeader}
           enableUserSelectHack={false}
-          cancel={`.${styles.windowControl}`}
+          cancel={`.${styles.titleInput}, .${styles.titleText}, .${styles.windowControl}`}
           style={{ zIndex: window.zIndex }}
           onDrag={(e, d) => {
             e.stopPropagation();
@@ -382,7 +427,30 @@ export default function NotedOS() {
           onClick={() => bringToFront(window.id)}
         >
           <div className={styles.windowHeader}>
-            <div className={styles.windowTitle}>{window.title}</div>
+            <div className={styles.windowTitle}>
+              {window.isEditingTitle ? (
+                <input
+                  type="text"
+                  value={window.title}
+                  onChange={(e) => updateWindowTitle(window.id, e.target.value)}
+                  onBlur={() => finishEditingTitle(window.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      finishEditingTitle(window.id);
+                    }
+                  }}
+                  autoFocus
+                  className={styles.titleInput}
+                />
+              ) : (
+                <div 
+                  onClick={() => startEditingTitle(window.id)}
+                  className={styles.titleText}
+                >
+                  {window.title}
+                </div>
+              )}
+            </div>
             <div className={styles.windowControls}>
               {window.type === 'canvas' && (
                 <>
@@ -430,11 +498,19 @@ export default function NotedOS() {
           {!window.isMinimized && (
             <div className={styles.windowContent}>
               {window.type === 'note' ? (
-                <ReactQuill
-                  value={window.content}
-                  onChange={(content) => updateWindowContent(window.id, content)}
-                  className={styles.editor}
-                />
+                <div className={styles.editor}>
+                  {mountEditor && (
+                    <ReactQuill
+                      key={window.id}
+                      value={window.content}
+                      onChange={(content) => updateWindowContent(window.id, content)}
+                      modules={quillModules}
+                      formats={quillFormats}
+                      theme="snow"
+                      preserveWhitespace={true}
+                    />
+                  )}
+                </div>
               ) : (
                 <canvas
                   ref={(canvas) => canvasRefs.current[window.id] = canvas}
