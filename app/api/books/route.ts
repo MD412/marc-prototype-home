@@ -70,8 +70,20 @@ export async function GET() {
     return NextResponse.json(books);
   } catch (error) {
     console.error('Error fetching books from Notion:', error);
+    let message = 'Unknown error';
+    if (error instanceof Error) {
+      message = error.message;
+    } else if (typeof error === 'string') {
+      message = error;
+    } else {
+      try {
+        message = JSON.stringify(error);
+      } catch {
+        message = String(error);
+      }
+    }
     return NextResponse.json(
-      { error: 'Failed to fetch books from Notion' },
+      { error: message },
       { status: 500 }
     );
   }
