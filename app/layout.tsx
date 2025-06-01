@@ -11,6 +11,7 @@ import type { Metadata } from "next";
 import { Inter } from 'next/font/google';
 import { Orbitron } from "next/font/google";
 import "./globals.css";
+import Head from 'next/head';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -42,6 +43,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;1,700&display=swap" rel="stylesheet" />
+      </Head>
       <body className={`${inter.variable} ${orbitron.variable}`}>
         {children}
       </body>
