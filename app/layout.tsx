@@ -8,15 +8,9 @@
  */
 
 import type { Metadata } from "next";
-import { Inter } from 'next/font/google';
 import { Orbitron } from "next/font/google";
 import "./globals.css";
 import Head from 'next/head';
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-});
 
 const orbitron = Orbitron({
   variable: "--font-orbitron",
@@ -45,8 +39,9 @@ export default function RootLayout({
     <html lang="en">
       <Head>
         <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;1,700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
       </Head>
-      <body className={`${inter.variable} ${orbitron.variable}`}>
+      <body className={`${orbitron.variable}`}>
         {children}
       </body>
     </html>
