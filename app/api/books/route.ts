@@ -14,6 +14,10 @@ interface BookProperties {
 
 export async function GET() {
   try {
+    // Debug: Log environment variables (partially masked for security)
+    console.log('NOTION_API_KEY:', process.env.NOTION_API_KEY ? `${process.env.NOTION_API_KEY.substring(0, 10)}...` : 'NOT SET');
+    console.log('NOTION_DATABASE_ID:', process.env.NOTION_DATABASE_ID || 'NOT SET');
+    
     // Initialize the Notion client with the API key
     const notion = new Client({
       auth: process.env.NOTION_API_KEY,
@@ -22,12 +26,23 @@ export async function GET() {
     const databaseId = process.env.NOTION_DATABASE_ID;
 
     if (!databaseId) {
+      console.log('Database ID is missing!');
       return NextResponse.json(
         { error: 'Notion database ID is not configured' },
         { status: 500 }
       );
     }
 
+    if (!process.env.NOTION_API_KEY) {
+      console.log('API Key is missing!');
+      return NextResponse.json(
+        { error: 'Notion API key is not configured' },
+        { status: 500 }
+      );
+    }
+
+    console.log('About to query Notion database...');
+    
     // Query the database
     const response = await notion.databases.query({
       database_id: databaseId,
@@ -38,6 +53,8 @@ export async function GET() {
         },
       ],
     });
+
+    console.log('Notion query successful, found', response.results.length, 'books');
 
     // Map the Notion response to our book format
     const books = response.results.map((page) => {
@@ -70,6 +87,17 @@ export async function GET() {
     return NextResponse.json(books);
   } catch (error) {
     console.error('Error fetching books from Notion:', error);
+    
+    // Enhanced error logging
+    if (error && typeof error === 'object') {
+      console.error('Error details:', {
+        name: (error as any).name,
+        message: (error as any).message,
+        code: (error as any).code,
+        status: (error as any).status
+      });
+    }
+    
     let message = 'Unknown error';
     if (error instanceof Error) {
       message = error.message;
