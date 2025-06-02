@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import styles from './styles/home.module.css';
-import { spaceGrotesk } from './fonts';
 import ParticleField from './components/ParticleField';
 
 export default function Home() {
@@ -40,7 +39,7 @@ export default function Home() {
   ];
 
   return (
-    <div className={`${styles.container} ${spaceGrotesk.className}`}>
+    <div className={styles.container}>
       <ParticleField />
       
       <div className={styles.mainContent}>

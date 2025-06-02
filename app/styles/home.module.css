@@ -10,6 +10,7 @@
   justify-content: center;
   padding: 1.5rem;
   color: white;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 .container::after {
