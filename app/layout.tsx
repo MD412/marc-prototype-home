@@ -40,6 +40,7 @@ export default function RootLayout({
       <Head>
         <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;1,700&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
       </Head>
       <body className={`${orbitron.variable}`}>
         {children}

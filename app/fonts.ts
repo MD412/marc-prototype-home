@@ -1,6 +1,1 @@
-import { Space_Grotesk } from 'next/font/google';
-
-export const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  display: 'swap',
-}); 
+// No fonts imported here - all fonts are loaded via <link> tags in layout.tsx 
